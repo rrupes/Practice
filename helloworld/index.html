@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML Structure Test</title>
+  <script src="https://unpkg.com/chai/chai.js"></script>
+  <script src="https://unpkg.com/mocha/mocha.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script>
+    mocha.setup('bdd');
+    const { assert } = chai;
+  </script>
+
+  <script>
+    describe('HTML Structure', function() {
+      let doc;
+
+      before(function() {
+        doc = document.implementation.createHTMLDocument('');
+        doc.documentElement.innerHTML = document.documentElement.innerHTML;
+      });
+
+      it('should have a closing html tag', function() {
+        const htmlElement = doc.querySelector('html');
+        assert.isNotNull(htmlElement, 'HTML element should exist');
+        assert.equal(htmlElement.tagName.toLowerCase(), 'html', 'Root element should be html');
+      });
+
+      it('should have a head and body', function() {
+        const head = doc.querySelector('head');
+        const body = doc.querySelector('body');
+        assert.isNotNull(head, 'Head element should exist');
+        assert.isNotNull(body, 'Body element should exist');
+      });
+
+      it('should have proper nesting', function() {
+        const html = doc.documentElement;
+        assert.equal(html.children.length, 2, 'HTML should have exactly two direct children');
+        assert.equal(html.children[0].tagName.toLowerCase(), 'head', 'First child of html should be head');
+        assert.equal(html.children[1].tagName.toLowerCase(), 'body', 'Second child of html should be body');
+      });
+    });
+  </script>
+
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>
